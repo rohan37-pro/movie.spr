@@ -1,6 +1,14 @@
 import platform
+import json
 import os
 from moviepy import VideoFileClip
+
+def convert_seconds(data):
+    second = 0
+    second += data['hour']*3600
+    second += data['minute']*60
+    second += data['second']
+    return second
 
 
 def cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with, clip_duration=60):
@@ -48,12 +56,13 @@ def cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with,
 
     print(f"Video has been cut into {num_clips + 1} clips.")
 
-# Example usage
-input_video_path = "Jeene Laga Hoon_360.mp4"  # Replace with your input video file path
-output_folder = "output_clips"  # Folder where clips will be saved
+
+# trim option configuration...
+videoTrimOptions = json.load(open('VideoTrimOptions.json', 'r'))
+
 
 #start time and end time in seconds...
-trim_starts_from = 37
-trim_ends_with = 192
+trim_starts_from = convert_seconds(videoTrimOptions['Trim_Starts_From'])
+trim_ends_with = convert_seconds(videoTrimOptions['Trim_Ends_With'])
 
-cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with)
+cut_video(videoTrimOptions["Video_Path"], videoTrimOptions["output_folder"], trim_starts_from, trim_ends_with)
