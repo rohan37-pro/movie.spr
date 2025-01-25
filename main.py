@@ -1,4 +1,3 @@
-import platform
 import json
 import os
 from moviepy import VideoFileClip
@@ -20,7 +19,7 @@ def cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with,
     
     # Calculate how many full clips there will be
     num_clips = int((video_duration - trim_starts_from - (video_duration-trim_ends_with)) // clip_duration)
-    print(num_clips)
+
     # Create the output folder if it doesn't exist
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -64,5 +63,6 @@ videoTrimOptions = json.load(open('VideoTrimOptions.json', 'r'))
 #start time and end time in seconds...
 trim_starts_from = convert_seconds(videoTrimOptions['Trim_Starts_From'])
 trim_ends_with = convert_seconds(videoTrimOptions['Trim_Ends_With'])
+
 
 cut_video(videoTrimOptions["Video_Path"], videoTrimOptions["output_folder"], trim_starts_from, trim_ends_with)
