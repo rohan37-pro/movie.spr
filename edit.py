@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from moviepy import VideoFileClip
 import os
+import time
 
 def convert_seconds(data):
     second = 0
@@ -119,7 +120,7 @@ def set_frame(input_video_path, output_video_path, text):
 
     # Release the video writer
     out.release()
-
+    time.sleep(2)
     # Now handle the audio using moviepy and combine it with the processed video
     video = VideoFileClip(input_video_path)
     audio = video.audio
@@ -129,7 +130,8 @@ def set_frame(input_video_path, output_video_path, text):
     final_video = final_video.with_audio(audio)
 
     # Write the final video with audio to the output file
-    final_video.write_videofile('final_'+output_video_path, codec="libx264", audio_codec="aac")
+    output_video_path = f"{output_video_path.split('/')[0]}/final_{output_video_path.split('/')[1]}"
+    final_video.write_videofile(output_video_path, codec="libx264", audio_codec="aac")
 
     # Close everything
     video.close()
