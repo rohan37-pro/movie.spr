@@ -13,7 +13,7 @@ trim_starts_from = convert_seconds(videoTrimOptions['Trim_Starts_From'])
 trim_ends_with = convert_seconds(videoTrimOptions['Trim_Ends_With'])
 
 
-cut_video(videoTrimOptions["Video_Path"], videoTrimOptions["output_folder"], trim_starts_from, trim_ends_with)
+cut_video(videoTrimOptions["Video_Path"], trim_starts_from, trim_ends_with)
 
 # video_files = os.listdir(videoTrimOptions['output_folder'])
 # video_files.sort()

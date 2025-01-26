@@ -4,6 +4,8 @@ from moviepy import VideoFileClip
 import os
 import time
 import threading
+import json
+
 
 def convert_seconds(data):
     second = 0
@@ -14,8 +16,11 @@ def convert_seconds(data):
 
 
 
-def cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with, clip_duration=60):
+def cut_video(input_video_path, trim_starts_from, trim_ends_with, clip_duration=60):
     # Load the video file
+    output_folder = "temp_clips"
+    if not os.path.exists(output_folder):
+        os.mkdir(output_folder)
     video = VideoFileClip(input_video_path)
     
     # Get the video duration (in seconds)
@@ -112,7 +117,6 @@ def set_frame(input_video_path, output_video_path, text):
 
         # Resize frame to fit 9:16 aspect ratio
         frame_resized = cv2.resize(frame, (new_width, new_height))
-
         # Create a black background with 9:16 aspect ratio (1080x1920)
         frame_with_black_bg = np.zeros((target_height, target_width, 3), dtype=np.uint8)
 
@@ -144,7 +148,8 @@ def set_frame(input_video_path, output_video_path, text):
     final_video = final_video.with_audio(audio)
 
     # Write the final video with audio to the output file
-    output_video_path = f"{output_video_path.split('/')[0]}/final_{output_video_path.split('/')[1]}"
+    vto = json.load(open("VideoTrimOptions.json", 'r'))
+    output_video_path = vto['output_folder'] + '/' +input_video_path.split('/')[1]
     final_video.write_videofile(output_video_path, codec="libx264", audio_codec="aac")
 
     # Close everything
@@ -152,7 +157,8 @@ def set_frame(input_video_path, output_video_path, text):
     final_video.close()
 
     #delete previous videos
-    os.remove(input_video_path)
-    os.remove(output_video_path.split('final_')[0] + output_video_path.split('final_')[1])
-
-
+    # try:
+    #     os.remove(input_video_path)
+    #     os.remove(output_video_path.split('final_')[0] + output_video_path.split('final_')[1])
+    # except:
+    #     pass
