@@ -16,7 +16,11 @@ def convert_seconds(data):
 
 
 
-def cut_video(input_video_path, trim_starts_from, trim_ends_with, clip_duration=60):
+def cut_video(input_video_path, trim_starts_from, trim_ends_with):
+    # loading VideoTrimOptions and set clip_duration
+    vto = json.load(open("VideoTrimOptions.json", 'r'))
+    clip_duration = vto["clip_duration"]
+
     # Load the video file
     output_folder = "temp_clips"
     if not os.path.exists(output_folder):

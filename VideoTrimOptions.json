@@ -1,7 +1,8 @@
 {
-    "Video_Path" : "video reletive path",
+    "Video_Path" : "video file path",
     "output_folder" : "output_clips",
     "movie_name" : "movie name",
+    "clip_duration" : 90,
     "Trim_Starts_From" : {
         "hour" : 0,
         "minute" : 0,
