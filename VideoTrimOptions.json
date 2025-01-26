@@ -1,6 +1,7 @@
 {
-    "Video_Path" : "Jeene Laga Hoon_360.mp4",
+    "Video_Path" : "video reletive path",
     "output_folder" : "output_clips",
+    "movie_name" : "movie name",
     "Trim_Starts_From" : {
         "hour" : 0,
         "minute" : 0,

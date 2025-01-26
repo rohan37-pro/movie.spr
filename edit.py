@@ -76,6 +76,9 @@ def cut_video(input_video_path, trim_starts_from, trim_ends_with, clip_duration=
 
 
 def set_frame(input_video_path, output_video_path, text):
+    # loading video editing option file
+    vto = json.load(open("VideoTrimOptions.json", 'r'))
+
     # Load the video with moviepy
     # input_video_path = 'output_clips\clip_1.mp4'
     clip = VideoFileClip(input_video_path)
@@ -95,10 +98,14 @@ def set_frame(input_video_path, output_video_path, text):
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (target_width, target_height))
 
     # Text settings
-    font = cv2.FONT_HERSHEY_SIMPLEX
+    font = cv2.FONT_ITALIC
+    movie_font = cv2.FONT_HERSHEY_COMPLEX
     font_scale = 2
+    movie_font_scale = 4
     font_color = (255, 255, 255)  # White
     font_thickness = 4
+    movie_font_thickness = 6
+    movie_text = vto["movie_name"]
     # text = 'Part 1'
 
     # Process the video frames
@@ -127,11 +134,17 @@ def set_frame(input_video_path, output_video_path, text):
         # Place the resized video on the black background
         frame_with_black_bg[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = frame_resized
 
-        # Add the text "Part 1" at the bottom
+        # Add the text "Part 1" at the the top
         text_size = cv2.getTextSize(text, font, font_scale, font_thickness)[0]
         text_x = (frame_with_black_bg.shape[1] - text_size[0]) // 2  # Center the text
-        text_y = frame_with_black_bg.shape[0]//4  # Position at the top
+        text_y = frame_with_black_bg.shape[0]//4   # Position at the top
         cv2.putText(frame_with_black_bg, text, (text_x, text_y), font, font_scale, font_color, font_thickness)
+
+        # add the text movie name
+        text_size = cv2.getTextSize(movie_text, movie_font, movie_font_scale, movie_font_thickness)[0]
+        text_x = (frame_with_black_bg.shape[1] - text_size[0]) // 2  # Center the text
+        text_y = (frame_with_black_bg.shape[0]//5)*2   # Position at the top
+        cv2.putText(frame_with_black_bg, text, (text_x, text_y), movie_font, movie_font_scale, font_color, movie_font_thickness)
 
         # Write the processed frame to the output video
         out.write(frame_with_black_bg)
@@ -148,7 +161,6 @@ def set_frame(input_video_path, output_video_path, text):
     final_video = final_video.with_audio(audio)
 
     # Write the final video with audio to the output file
-    vto = json.load(open("VideoTrimOptions.json", 'r'))
     output_video_path = vto['output_folder'] + '/' +input_video_path.split('/')[1]
     final_video.write_videofile(output_video_path, codec="libx264", audio_codec="aac")
 
