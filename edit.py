@@ -3,6 +3,7 @@ import numpy as np
 from moviepy import VideoFileClip
 import os
 import time
+import threading
 
 def convert_seconds(data):
     second = 0
@@ -41,6 +42,11 @@ def cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with,
         
         # Write the subclip to the file (including audio)
         subclip.write_videofile(output_file, audio=True)
+        time.sleep(2)
+
+        # starting a thread to add frame
+        clip_with_frame_path = f"{output_folder}/clip_{i+1}_with_frame.mp4"
+        threading.Thread(target=set_frame, args=(output_file, clip_with_frame_path, f"Part {i+1}")).start()
     
     # Save the remaining part of the video (if any) as the last clip
     remaining_time = trim_ends_with - ((num_clips * clip_duration) + trim_starts_from)
@@ -54,6 +60,11 @@ def cut_video(input_video_path, output_folder, trim_starts_from, trim_ends_with,
 
         # Write the remaining subclip to the file
         subclip.write_videofile(output_file, audio=True)
+        time.sleep(2)
+
+        # start a thread to add frame
+        clip_with_frame_path = f"{output_folder}/clip_{num_clips+1}_with_frame.mp4"
+        threading.Thread(target=set_frame, args=(output_file, clip_with_frame_path, f"Part {num_clips+1}")).start()
 
     print(f"Video has been cut into {num_clips + 1} clips.")
 

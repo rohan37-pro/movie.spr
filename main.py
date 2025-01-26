@@ -15,16 +15,16 @@ trim_ends_with = convert_seconds(videoTrimOptions['Trim_Ends_With'])
 
 cut_video(videoTrimOptions["Video_Path"], videoTrimOptions["output_folder"], trim_starts_from, trim_ends_with)
 
-video_files = os.listdir(videoTrimOptions['output_folder'])
-video_files.sort()
-print(video_files)
-for i in range(3,0,-1):
-    print(f"framming starts in {i}", end="\r")
-    time.sleep(1)
+# video_files = os.listdir(videoTrimOptions['output_folder'])
+# video_files.sort()
+# print(video_files)
+# for i in range(3,0,-1):
+#     print(f"framming starts in {i}", end="\r")
+#     time.sleep(1)
 
-part=1
-for vid_file in video_files:
-    output_video_path = f"{videoTrimOptions['output_folder']}/{vid_file.split('.')[0]}_with_frame.mp4"
-    input_video_path = f"{videoTrimOptions['output_folder']}/{vid_file}"
-    set_frame(input_video_path, output_video_path, f"Part {part}")
-    part+=1
+# part=1
+# for vid_file in video_files:
+#     output_video_path = f"{videoTrimOptions['output_folder']}/{vid_file.split('.')[0]}_with_frame.mp4"
+#     input_video_path = f"{videoTrimOptions['output_folder']}/{vid_file}"
+#     set_frame(input_video_path, output_video_path, f"Part {part}")
+#     part+=1
