@@ -82,6 +82,8 @@ def cut_video(input_video_path, trim_starts_from, trim_ends_with):
 def set_frame(input_video_path, output_video_path, text):
     # loading video editing option file
     vto = json.load(open("VideoTrimOptions.json", 'r'))
+    if vto["bg_color"].lower()[0] not in "bw":
+        print(f"WARNING : bground color {vto['bg_color']} not supported... setting it to black")
 
     # Load the video with moviepy
     # input_video_path = 'output_clips\clip_1.mp4'
@@ -110,6 +112,8 @@ def set_frame(input_video_path, output_video_path, text):
     font_thickness = 2
     movie_font_thickness = 6
     movie_text = vto["movie_name"]
+    if vto["bg_color"].lower()[0]=="w":
+        font_color = (0,0,0)
     # text = 'Part 1'
 
     # Process the video frames
@@ -129,29 +133,32 @@ def set_frame(input_video_path, output_video_path, text):
         # Resize frame to fit 9:16 aspect ratio
         frame_resized = cv2.resize(frame, (new_width, new_height))
         # Create a black background with 9:16 aspect ratio (1080x1920)
-        frame_with_black_bg = np.zeros((target_height, target_width, 3), dtype=np.uint8)
+        if vto["bg_color"].lower()[0]=="w":
+            frame_with_black_white_bg = np.ones((target_height, target_width, 3), dtype=np.uint8)*255
+        else:
+            frame_with_black_white_bg = np.zeros((target_height, target_width, 3), dtype=np.uint8)
 
         # Calculate the position to center the resized video on the black background
         x_offset = (target_width - new_width) // 2
         y_offset = (target_height - new_height) // 2
 
         # Place the resized video on the black background
-        frame_with_black_bg[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = frame_resized
+        frame_with_black_white_bg[y_offset:y_offset + new_height, x_offset:x_offset + new_width] = frame_resized
 
         # Add the text "Part 1" at the the top
         text_size = cv2.getTextSize(text, font, font_scale, font_thickness)[0]
-        text_x = (frame_with_black_bg.shape[1] - text_size[0]) // 2  # Center the text
-        text_y = (frame_with_black_bg.shape[0]//10)*3   # Position at the top
-        cv2.putText(frame_with_black_bg, text, (text_x, text_y), font, font_scale, font_color, font_thickness)
+        text_x = (frame_with_black_white_bg.shape[1] - text_size[0]) // 2  # Center the text
+        text_y = (frame_with_black_white_bg.shape[0]//10)*3   # Position at the top
+        cv2.putText(frame_with_black_white_bg, text, (text_x, text_y), font, font_scale, font_color, font_thickness)
 
         # add the text movie name
         text_size = cv2.getTextSize(movie_text, movie_font, movie_font_scale, movie_font_thickness)[0]
-        text_x = (frame_with_black_bg.shape[1] - text_size[0]) // 2  # Center the text
-        text_y = (frame_with_black_bg.shape[0]//10)*2   # Position at the top
-        cv2.putText(frame_with_black_bg, movie_text, (text_x, text_y), movie_font, movie_font_scale, font_color, movie_font_thickness)
+        text_x = (frame_with_black_white_bg.shape[1] - text_size[0]) // 2  # Center the text
+        text_y = (frame_with_black_white_bg.shape[0]//10)*2   # Position at the top
+        cv2.putText(frame_with_black_white_bg, movie_text, (text_x, text_y), movie_font, movie_font_scale, font_color, movie_font_thickness)
 
         # Write the processed frame to the output video
-        out.write(frame_with_black_bg)
+        out.write(frame_with_black_white_bg)
 
     # Release the video writer
     out.release()

@@ -2,6 +2,7 @@
     "Video_Path" : "video file path",
     "output_folder" : "output_clips",
     "movie_name" : "movie name",
+    "bg_color" : "white",
     "clip_duration" : 90,
     "Trim_Starts_From" : {
         "hour" : 0,
