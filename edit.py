@@ -99,11 +99,11 @@ def set_frame(input_video_path, output_video_path, text):
 
     # Text settings
     font = cv2.FONT_ITALIC
-    movie_font = cv2.FONT_HERSHEY_COMPLEX
+    movie_font = cv2.FONT_HERSHEY_SIMPLEX
     font_scale = 2
-    movie_font_scale = 4
+    movie_font_scale = 2
     font_color = (255, 255, 255)  # White
-    font_thickness = 4
+    font_thickness = 2
     movie_font_thickness = 6
     movie_text = vto["movie_name"]
     # text = 'Part 1'
@@ -137,14 +137,14 @@ def set_frame(input_video_path, output_video_path, text):
         # Add the text "Part 1" at the the top
         text_size = cv2.getTextSize(text, font, font_scale, font_thickness)[0]
         text_x = (frame_with_black_bg.shape[1] - text_size[0]) // 2  # Center the text
-        text_y = frame_with_black_bg.shape[0]//4   # Position at the top
+        text_y = (frame_with_black_bg.shape[0]//10)*3   # Position at the top
         cv2.putText(frame_with_black_bg, text, (text_x, text_y), font, font_scale, font_color, font_thickness)
 
         # add the text movie name
         text_size = cv2.getTextSize(movie_text, movie_font, movie_font_scale, movie_font_thickness)[0]
         text_x = (frame_with_black_bg.shape[1] - text_size[0]) // 2  # Center the text
-        text_y = (frame_with_black_bg.shape[0]//5)*2   # Position at the top
-        cv2.putText(frame_with_black_bg, text, (text_x, text_y), movie_font, movie_font_scale, font_color, movie_font_thickness)
+        text_y = (frame_with_black_bg.shape[0]//10)*2   # Position at the top
+        cv2.putText(frame_with_black_bg, movie_text, (text_x, text_y), movie_font, movie_font_scale, font_color, movie_font_thickness)
 
         # Write the processed frame to the output video
         out.write(frame_with_black_bg)
