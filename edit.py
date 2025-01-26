@@ -98,6 +98,9 @@ def set_frame(input_video_path, output_video_path, text):
 
     # Process the video frames
     for frame in clip.iter_frames(fps=fps, dtype="uint8"):
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
         # Resize the video while maintaining its aspect ratio
         aspect_ratio = frame_width / frame_height
         new_width = target_width
@@ -151,4 +154,5 @@ def set_frame(input_video_path, output_video_path, text):
     #delete previous videos
     os.remove(input_video_path)
     os.remove(output_video_path.split('final_')[0] + output_video_path.split('final_')[1])
+
 
