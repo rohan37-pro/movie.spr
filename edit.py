@@ -136,3 +136,8 @@ def set_frame(input_video_path, output_video_path, text):
     # Close everything
     video.close()
     final_video.close()
+
+    #delete previous videos
+    os.remove(input_video_path)
+    os.remove(output_video_path.split('final_')[0] + output_video_path.split('final_')[1])
+
