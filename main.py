@@ -7,6 +7,8 @@ import time
 # trim option configuration...
 videoTrimOptions = json.load(open('VideoTrimOptions.json', 'r'))
 
+if not os.path.exists(videoTrimOptions['output_folder']):
+    os.mkdir(videoTrimOptions["output_folder"])
 
 #start time and end time in seconds...
 trim_starts_from = convert_seconds(videoTrimOptions['Trim_Starts_From'])
