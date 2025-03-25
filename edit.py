@@ -21,8 +21,12 @@ def cut_video(input_video_path, trim_starts_from, trim_ends_with):
     vto = json.load(open("VideoTrimOptions.json", 'r'))
     clip_duration = vto["clip_duration"]
 
+    platform = vto["fb/ig"]
     # Load the video file
-    output_folder = "temp_clips"
+    if platform == "ig":
+        output_folder = "temp_clips"
+    elif platform=='fb':
+        output_folder = vto["output_folder"]
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
     video = VideoFileClip(input_video_path)
@@ -54,8 +58,9 @@ def cut_video(input_video_path, trim_starts_from, trim_ends_with):
         time.sleep(2)
 
         # starting a thread to add frame
-        clip_with_frame_path = f"{output_folder}/clip_{i+1}_with_frame.mp4"
-        threading.Thread(target=set_frame, args=(output_file, clip_with_frame_path, f"Part {i+1}")).start()
+        if platform=='ig':
+            clip_with_frame_path = f"{output_folder}/clip_{i+1}_with_frame.mp4"
+            threading.Thread(target=set_frame, args=(output_file, clip_with_frame_path, f"Part {i+1}")).start()
     
     # Save the remaining part of the video (if any) as the last clip
     remaining_time = trim_ends_with - ((num_clips * clip_duration) + trim_starts_from)
@@ -72,8 +77,9 @@ def cut_video(input_video_path, trim_starts_from, trim_ends_with):
         time.sleep(2)
 
         # start a thread to add frame
-        clip_with_frame_path = f"{output_folder}/clip_{num_clips+1}_with_frame.mp4"
-        threading.Thread(target=set_frame, args=(output_file, clip_with_frame_path, f"Part {num_clips+1}")).start()
+        if platform=='ig':
+            clip_with_frame_path = f"{output_folder}/clip_{num_clips+1}_with_frame.mp4"
+            threading.Thread(target=set_frame, args=(output_file, clip_with_frame_path, f"Part {num_clips+1}")).start()
 
     print(f"Video has been cut into {num_clips + 1} clips.")
 

@@ -1,9 +1,10 @@
 {
-    "Video_Path" : "video file path",
+    "Video_Path" : "",
     "output_folder" : "output_clips",
-    "movie_name" : "movie name",
-    "bg_color" : "white",
+    "movie_name" : "",
+    "bg_color" : "black",
     "clip_duration" : 90,
+    "fb/ig" : "fb",
     "Trim_Starts_From" : {
         "hour" : 0,
         "minute" : 0,
